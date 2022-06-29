@@ -22,11 +22,9 @@
       flex-wrap: wrap;
       gap: 15px;
     }
-
   </style>
   <body>
     <div id="app"></div>
-
 
     <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
@@ -34,37 +32,39 @@
     <script type="text/babel">
 
       const Title =(props) => {
-
         return(
           <h1>{props.children}</h1>
         );
       };
 
-      const Form = ({updateMaincat}) => { 
+      const From = ({updateMainCat}) => {
         const includesHangul = (text) => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/i.test(text);
 
         const [value, setValue] = React.useState("");
         const [errorMessage, setErrorMessage] = React.useState("");
 
-        function handleInputChange(e) {
+
+        function handleInputChange(e){
           const userValue = e.target.value;
           setErrorMessage("");
 
-          if (includesHangul(userValue)) {
-            setErrorMessage("한글을 입력 할 수 없습니다.");
+          if(includesHangul(userValue)){
+            setErrorMessage("한글은 입력할 수 없습니다.");
           }
 
-          setValue(userValue,toUpperCase());
+          setValue(userValue.toUpperCase());
         }
 
-        function handleFormSubmit(e) {
+        function handleFormSubmit(e){
           e.preventDefault();
           setErrorMessage("");
-          if (value ==="") {
-            setErrorMessage("빈값은 입력할 수 없습니다.");
+
+          if(value ===""){
+            setErrorMessage("빈 값으로 만들 수 없습니다.");
             return;
-          } 
-          updateMaincat();
+          }
+
+          updateMainCat();
         }
 
         return(
@@ -72,17 +72,15 @@
             <input 
             type="text" 
             name="name" 
-            placeholder="영어 대사를 입력해주세요"
-            value ={value}
-            onChange ={handleInputChange} 
+            placeholder="영어 대사를 입력해주세요" 
+            value={value}
+            onChange={handleInputChange}
             />
             <button type="submit">생성</button>
-            <P style={{color:"red"}}>{errorMessage}</p>
+            <p style={{color:"red"}}>{errorMessage}</p>
           </form>
         );
-      }; 
-        
-
+      };
 
       function CatItem(props){
         return(
@@ -92,20 +90,14 @@
         );
       };
 
-
       function Favorites({favorites}){
-
         
         return (
           <ul className="favorites">
-          
             {favorites.map(cat => <CatItem img={cat} key={cat} />)}
           </ul>
         );
       };
-
-      
-
 
       const MainCard = ({img,onHeartClick}) => {
 
@@ -121,24 +113,24 @@
         );
       };
 
-      const App = ()=>{
+
+      const App =() => {
         const CAT1 = "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
         const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
         const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
 
         const [counter, setCounter] = React.useState(1);
         const [mainCat, setMainCat] = React.useState(CAT1);
-        const [favorites, setFavorites] = React.useState([CAT1, CAT2]);
+        const [favorites, setFavorites] = React.useState([CAT1,CAT2]); 
 
-
-        /* function handleFormSubmit(event) {
+       /*  function handleFormSubmit(event){
           event.preventDefault();
           setCounter(counter +1);
           setMainCat(CAT2);
           
-        }; */
+        };  */
 
-        function updateMaincat() {
+        function updateMainCat(){
           setMainCat(CAT2);
           setCounter(counter +1);
         }
@@ -150,7 +142,7 @@
         return(
           <div>
             <Title>{counter}번째 고양이 가라사대</Title>
-            <Form updateMaincat={updateMaincat}/>
+            <From updateMainCat={updateMainCat}/>
             <MainCard img={mainCat} onHeartClick={handleHeartClick}/>
             <Favorites favorites={favorites}/>
           </div>
@@ -158,43 +150,39 @@
       };
 
 
-
       const cat = document.querySelector("#app");
 
-        ReactDOM.render(<App/>, cat);
+      ReactDOM.render(<App/>, cat);
 
     </script>
-
   </body>
 </html>
 
 <!-- 
->>> 중간코드 정리하기
-(1)콘솔 모두 삭제 
+>>> 중간 코드 정리하기
+(1)콘솔 모두 삭제
+
 (2)리액트에서 이벤트 헨들러 함수이름을 지을때 사용하는 컨벤션(convention):규칙,약속
-이벤트ㅇ헨들러 함수 이름을 지을때는 handle 이라고 시작을 하고 그 함수를 만약에 프롭으로 넘긴다고 했을때 on이라는 접두어를 붙인다. 실제로 내가 코딩한 함수의 이름은 handle로 지어도 이것을 프롭으로 넘길때는 on이라고 한다.
+이벤트헨들러 함수 이름을 지을때는 handle 이라고 시작을 하고 그 함수를 만약에 프롭으로 넘긴다고 했을때
+on이라는 접두어를 붙인다. 실제로 내가 코딩한 함수의 이름은  handle로 지어도  이걸 프롭으로 넘길때는 on이라고 한다.
 
--변경전-
 <MainCard img={mainCat} handleHeartClick={handleHeartClick}/>
-const MainCard = ({img,handleHeartClick}) => {
-<button onClick={handleHeartClick}>🤍</button>
+<MainCard img={mainCat} onHeartClick={handleHeartClick}/>  ▶변경
 
--변경후-
-<MainCard img={mainCat} onHeartClick={handleHeartClick}/>  ->변경
-const MainCard = ({img,onHeartClick}) => {
-<button onClick={onHeartClick}>🤍</button>
+const MainCard = ({img, handleHeartClick}) => {
+const MainCard = ({img, onHeartClick}) => {  ▶변경  onHeartClick으로 넘겨줌
 
+<button onClick={handleHeartClick}>🤍</button> 
+<button onClick={onHeartClick}>🤍</button> ▶변경
 
-(3)부모 컴포넌트(App)에서 handleFormsubmit 이라는 함수를 부모에서 보내주고 잇는데 
+(3)부모컴포넌트(App) 에서 handleFormSubmit이라는 함수를 부모에서 내려서 보내주고 있는데
 
-<Form handleFormSubmit={handleFormSubmit}/>
+<From handleFormSubmit={handleFormSubmit}/>
 
-const = () => {여기서 는 사용하고 있지 않고 직접 handleFormsubmit을 구현하고 있다.}
+const Form = () => {   여기서는 사용하고 있지 않고 직접 handleFormSubmit을 구현하고 있다.
 
-->부모컴포넌트의 handleFormsubmit을 수정한다. updateMaincat 함수를 새로 만들었음
+->부모컴포넌트의 handleFormSubmit 을 수정한다. ->updateMainCat 함수를 새로 만들었음
 
-const from =({updateMaincat}) ->변경
-
-
+ const From = ({updateMainCat}) => {  ▶변경
 
 -->

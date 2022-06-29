@@ -40,39 +40,36 @@
         );
       };
 
-      //const Form = ({handleFormSubmit}) => {
-      const Form = () => {  
-
+      // const From = ({handleFormSubmit}) => {
+        const From = () => {
         const includesHangul = (text) => /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/i.test(text);
 
         const [value, setValue] = React.useState("");
         const [errorMessage, setErrorMessage] = React.useState("");
 
-        /* function handleInputChange(e) {
+        /* function handleInputChange(e){
           setValue(e.target.value.toUpperCase());
         } */
 
-        function handleInputChange(e) {
+        function handleInputChange(e){
           const userValue = e.target.value;
           setErrorMessage("");
 
-          if (includesHangul(userValue)) {
-            setErrorMessage("한글을 입력 할 수 없습니다.");
+          if(includesHangul(userValue)){
+            setErrorMessage("한글은 입력할 수 없습니다.");
           }
 
-          setValue(userValue,toUpperCase());
-        };
+          setValue(userValue.toUpperCase());
+        }
 
-        function handleFormSubmit(e) {
+        function handleFormSubmit(e){
           e.preventDefault();
 
-          if (value ==="") {
-            setErrorMessage("빈값은 입력할 수 없습니다.");
-          } 
-          else {
+          if(value ===""){
+            setErrorMessage("빈 값으로 만들 수 없습니다.");
+          }else{
             setErrorMessage("");
           }
-          
         }
 
         return(
@@ -80,12 +77,12 @@
             <input 
             type="text" 
             name="name" 
-            placeholder="영어 대사를 입력해주세요"
-            value ={value}
-            onChange ={handleInputChange} 
+            placeholder="영어 대사를 입력해주세요" 
+            value={value}
+            onChange={handleInputChange}
             />
             <button type="submit">생성</button>
-            <P style={{color:"red"}}>{errorMessage}</p>
+            <p style={{color:"red"}}>{errorMessage}</p>
           </form>
         );
       };
@@ -98,20 +95,14 @@
         );
       };
 
-
       function Favorites({favorites}){
-
         
         return (
           <ul className="favorites">
-          
             {favorites.map(cat => <CatItem img={cat} key={cat} />)}
           </ul>
         );
       };
-
-      
-
 
       const MainCard = ({img,handleHeartClick}) => {
 
@@ -127,23 +118,23 @@
         );
       };
 
-      const App = ()=>{
+
+      const App =() => {
         const CAT1 = "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
         const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
         const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
 
         const [counter, setCounter] = React.useState(1);
         const [mainCat, setMainCat] = React.useState(CAT1);
-        const [favorites, setFavorites] = React.useState([CAT1, CAT2]);
+        const [favorites, setFavorites] = React.useState([CAT1,CAT2]); 
 
-
-        function handleFormSubmit(event) {
+        function handleFormSubmit(event){
           event.preventDefault();
           console.log("폼 전송됨");
           setCounter(counter +1);
           setMainCat(CAT2);
           
-        };
+        }; 
 
         function handleHeartClick(){
           console.log("하트 눌렀음");
@@ -153,7 +144,7 @@
         return(
           <div>
             <Title>{counter}번째 고양이 가라사대</Title>
-            <Form handleFormSubmit={handleFormSubmit}/>
+            <From handleFormSubmit={handleFormSubmit}/>
             <MainCard img={mainCat} handleHeartClick={handleHeartClick}/>
             <Favorites favorites={favorites}/>
           </div>
@@ -161,21 +152,19 @@
       };
 
 
-
       const cat = document.querySelector("#app");
 
-        ReactDOM.render(<App/>, cat);
+      ReactDOM.render(<App/>, cat);
 
     </script>
-
   </body>
 </html>
 
 <!-- 
 >>> 
-(1)영어대사를 입력해야 하는데 한글을 입력하면 "한글을 입력할 수 없습니다."
-(2)빈값을 입력하고 생성버튼을 눌럿다면 "빈값으로는 생성할 수 없습니다."
+(1)영어대사를 입력해야 하는데 한글을 입력하면 "한글은 입력할 수 없습니다." 
+(2)빈값을 입력하고 생성버튼을 눌렀다면 "빈값으로는 생성할수 없습니다."
 
-*사용자들이 폼을 쓸 때 나올수 잇는 여러케이스들을 개발해본다. -> 폼 검증(form validation)
+*사용자들이 폼을 쓸때 나올 수 있는 에러케이스들을 개발해본다. -> 폼검증(form validation)
 
 -->
